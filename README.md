@@ -17,7 +17,7 @@ uv run pytest
 pyproject.toml
 dominio/        # excepciones, catálogos, estados, nota, aviso, usuarios
 tests/          # test_avisos.py (un test por regla R1–R6, prefijo test_rN_)
-docs/avance-1.md  # diagramas, tarjetas CRC, decisiones, defensa
+docs/           # documento del avance (PDF) y diagramas de clases y estados
 ```
 
 ## Entrega
