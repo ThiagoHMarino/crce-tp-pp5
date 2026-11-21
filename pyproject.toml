@@ -1,0 +1,17 @@
+[project]
+name = "crce-tp-pp5"
+version = "0.1.0"
+description = "TP Integrador 2026 - PP5 - CRCE. Avance 1: avisos y notas (dominio)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
