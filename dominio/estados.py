@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class EstadoAviso(ABC):
     """Contrato mínimo de un estado.
 
-    Toda operación rechazada lanza una `ErrorDeDominio` (o una subclase) y no
+    Toda operación rechazada lanza una `ErrorCRCE` (o una subclase) y no
     modifica nada: los estados no tienen efectos, solo devuelven el estado
     siguiente.
     """
@@ -30,7 +30,7 @@ class EstadoAviso(ABC):
     def validar_agregado_nota(self) -> None:
         """Comprueba si el estado permite agregar una nota.
 
-        Lanza `ErrorDeDominio` si no lo permite.
+        Lanza `ErrorCRCE` si no lo permite.
         """
 
     def descartar(
@@ -44,10 +44,7 @@ class EstadoAviso(ABC):
 
 
 class Pendiente(EstadoAviso):
-    """Aviso sin evaluar: admite notas y puede descartarse.
-
-    No guarda datos propios, por eso una misma instancia puede compartirse.
-    """
+    """Aviso sin evaluar: admite notas y puede descartarse."""
 
     NOMBRE = "pendiente"
 
@@ -57,8 +54,7 @@ class Pendiente(EstadoAviso):
     def descartar(
         self, operador: Operador, justificacion: str, fecha_hora: datetime
     ) -> EstadoAviso:
-        if not (isinstance(justificacion, str) and justificacion.strip()):
-            raise JustificacionInvalida()
+        """Construye y devuelve el nuevo estado; Descartado valida sus datos."""
         return Descartado(operador, justificacion, fecha_hora)
 
 
@@ -72,13 +68,18 @@ class Aceptado(EstadoAviso):
 
 
 class Descartado(EstadoAviso):
-    """Aviso descartado (terminal). Conserva operador, justificación y fecha."""
+    """Aviso descartado (terminal). Conserva operador, justificación y fecha.
+
+    Es dueño de su invariante: no puede existir sin una justificación válida.
+    """
 
     NOMBRE = "descartado"
 
     def __init__(
         self, operador: Operador, justificacion: str, fecha_hora: datetime
     ) -> None:
+        if not (isinstance(justificacion, str) and justificacion.strip()):
+            raise JustificacionInvalida()
         self._operador = operador
         self._justificacion = justificacion
         self._fecha_hora = fecha_hora

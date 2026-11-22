@@ -3,9 +3,8 @@
 ## Tarjetas CRC
 
 > **Estado del documento:** borrador sujeto a revisión académica. Actualiza las
-> tarjetas CRC del documento del avance (sección 5) según la revisión de diseño.
-> Describe el diseño acordado; tres decisiones todavía no están aplicadas en el
-> código (ver [Correspondencia con el código](#correspondencia-con-el-código)).
+> tarjetas CRC del documento del avance (sección 5) según la revisión de diseño
+> y describe el diseño implementado en `dominio/`.
 
 ### Convención utilizada
 
@@ -238,20 +237,6 @@ redefinir el rechazo de `descartar`)
 - **Clases sin tarjeta.** `TipoSituacion` y `GravedadEstimada` son catálogos
   cerrados sin comportamiento propio en este avance. Las excepciones de la
   jerarquía `ErrorCRCE` se documentan por separado.
-
-### Correspondencia con el código
-
-Estas tarjetas describen decisiones ya acordadas que el código todavía no
-refleja:
-
-| Decisión acordada | Código actual |
-| --- | --- |
-| `Descartado` valida su justificación al construirse. | La validación está en `Pendiente.descartar` (`dominio/estados.py`). |
-| Cada aviso crea su propia instancia de `Pendiente`. | El valor por defecto `Pendiente()` se evalúa una sola vez y lo comparten todos los avisos (`dominio/aviso.py`). |
-| La excepción base se llama `ErrorCRCE`. | Se llama `ErrorDeDominio` (`dominio/excepciones.py`). |
-
-Hasta que el código se actualice, las tarjetas y la implementación no
-coinciden en estos tres puntos.
 
 ### Decisiones pendientes
 

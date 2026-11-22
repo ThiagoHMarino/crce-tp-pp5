@@ -1,11 +1,11 @@
 """Excepciones de dominio: una base por sistema y una subclase por regla."""
 
 
-class ErrorDeDominio(Exception):
+class ErrorCRCE(Exception):
     """Base de todas las reglas de negocio violadas en el CRCE."""
 
 
-class EstadoNoPermiteOperacion(ErrorDeDominio):
+class EstadoNoPermiteOperacion(ErrorCRCE):
     """R5: el estado actual del aviso no admite la operación pedida."""
 
     def __init__(self, estado: str, operacion: str) -> None:
@@ -14,28 +14,28 @@ class EstadoNoPermiteOperacion(ErrorDeDominio):
         self.operacion = operacion
 
 
-class JustificacionInvalida(ErrorDeDominio):
+class JustificacionInvalida(ErrorCRCE):
     """R4: descartar exige una justificación que no esté vacía."""
 
     def __init__(self) -> None:
         super().__init__("La justificación del descarte no puede estar vacía")
 
 
-class TextoDeNotaInvalido(ErrorDeDominio):
+class TextoDeNotaInvalido(ErrorCRCE):
     """Una nota de texto no puede estar vacía."""
 
     def __init__(self) -> None:
         super().__init__("El texto de la nota no puede estar vacío")
 
 
-class AutorNoCorresponde(ErrorDeDominio):
+class AutorNoCorresponde(ErrorCRCE):
     """Solo el reportante que registró el aviso puede agregarle notas."""
 
     def __init__(self) -> None:
         super().__init__("Solo el reportante del aviso puede agregarle notas")
 
 
-class ValorFueraDeCatalogo(ErrorDeDominio):
+class ValorFueraDeCatalogo(ErrorCRCE):
     """Un valor que no pertenece a un catálogo cerrado no llega a un aviso."""
 
     def __init__(self, catalogo: str, valor: object) -> None:

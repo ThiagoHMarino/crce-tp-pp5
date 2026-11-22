@@ -31,8 +31,9 @@ class Aviso:
         descripcion: str,
         reportante: Reportante,
         fecha_registro: datetime,
-        # Pendiente no guarda datos propios, por eso compartir la instancia es seguro.
-        estado: EstadoAviso = Pendiente(),
+        # Composición: cada aviso es dueño exclusivo de su estado. Si se inyecta
+        # uno, se transfiere su propiedad y no debe compartirse con otro aviso.
+        estado: EstadoAviso | None = None,
     ) -> None:
         self._id = id
         self._ubicacion = ubicacion
@@ -41,7 +42,7 @@ class Aviso:
         self._descripcion = descripcion
         self._reportante = reportante
         self._fecha_registro = fecha_registro
-        self._estado = estado
+        self._estado = estado if estado is not None else Pendiente()
         self._notas: list[Nota] = []
 
     # --- consultas (propiedades de solo lectura) ---------------------------------
@@ -93,5 +94,5 @@ class Aviso:
     def descartar(
         self, operador: Operador, justificacion: str, fecha_hora: datetime
     ) -> None:
-        """R4 y R5: el estado calcula el estado siguiente; recién ahí se asigna."""
+        """R4 y R5: el estado construye el siguiente; recién ahí se asigna (R6)."""
         self._estado = self._estado.descartar(operador, justificacion, fecha_hora)
